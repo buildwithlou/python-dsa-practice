@@ -9,15 +9,38 @@ def validate_grade(func):
         return func(*args, **kwargs)
     return wrapper
 
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
+class ActionLog:
+    def __init__(self):
+        self.head = None
+    
+    def log(self, action):
+        new_node = Node(action)
+        new_node.next = self.head
+        self.head = new_node
+
+    def show_log(self):
+        print("\n--- Action Log---")
+        current = self.head
+        while current:
+            print(f"→ {current.value}")
+            current = current.next
+
 class GradeTracker:
     def __init__(self):
         self.students = {}
         self.undo_stack = []
+        self.log = ActionLog() 
     
     @validate_grade
     def add_student(self, name, grade):
         self.students[name] = grade
         self.undo_stack.append(name) #push to stack
+        self.log.log(f"Added {name} with grade {grade}")
         print(f"Added {name} with grade {grade}")
     
     def show_all(self):
@@ -31,10 +54,13 @@ class GradeTracker:
             return
         last = self.undo_stack.pop()
         del self.students[last]
+        self.log.log(f"Undid: removed {last}")
         print(f"Undid: removed {last}")
 
 tracker = GradeTracker()
 tracker.add_student("Carlos", 95)
 tracker.add_student("Maria", 87)
+tracker.add_student("Ana", 78)
 tracker.undo()
+tracker.log.show_log()    # should show all actions, latest first
 tracker.show_all()
