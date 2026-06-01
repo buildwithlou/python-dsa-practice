@@ -12,10 +12,12 @@ def validate_grade(func):
 class GradeTracker:
     def __init__(self):
         self.students = {}
+        self.undo_stack = []
     
     @validate_grade
     def add_student(self, name, grade):
         self.students[name] = grade
+        self.undo_stack.append(name) #push to stack
         print(f"Added {name} with grade {grade}")
     
     def show_all(self):
@@ -23,8 +25,16 @@ class GradeTracker:
         for name, grade in self.students.items():
             print(f"{name}: {grade}")
 
+    def undo(self):
+        if not self.undo_stack:
+            print("Nothing to undo")
+            return
+        last = self.undo_stack.pop()
+        del self.students[last]
+        print(f"Undid: removed {last}")
+
 tracker = GradeTracker()
 tracker.add_student("Carlos", 95)
 tracker.add_student("Maria", 87)
-tracker.add_student("Ana", 101)   # should trigger decorator error
+tracker.undo()
 tracker.show_all()
