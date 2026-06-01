@@ -30,18 +30,60 @@ class ActionLog:
             print(f"→ {current.value}")
             current = current.next
 
+class BSTNode:
+    def __init__(self, grade, name):
+        self.grade = grade
+        self.name = name
+        self.left = None
+        self.right = None
+
+class GradeBST:
+    def __init__(self):
+        self.root = None
+    
+    def insert(self, grade, name):
+        new_node = BSTNode(grade, name)
+        if not self.root:
+            self.root = new_node
+            return
+        current = self.root
+        while True:
+            if grade < current.grade:
+                if current.left is None:
+                    current.left = new_node
+                    return
+                current = current.left
+            else: 
+                if current.right is None:
+                    current.right = new_node
+                    return
+                current = current.right
+    
+    def inorder(self, node):
+        if node is None:
+            return
+        self.inorder(node.left)
+        print(f"{node.name}: {node.grade}")
+        self.inorder(node.right)
+
 class GradeTracker:
     def __init__(self):
         self.students = {}
         self.undo_stack = []
         self.log = ActionLog() 
+        self.bst = GradeBST()
     
     @validate_grade
     def add_student(self, name, grade):
         self.students[name] = grade
         self.undo_stack.append(name) #push to stack
         self.log.log(f"Added {name} with grade {grade}")
+        self.bst.insert(grade, name)
         print(f"Added {name} with grade {grade}")
+
+    def show_ranked(self):
+        print("\n-- Students Ranked by Grade --")
+        self.bst.inorder(self.bst.root)
     
     def show_all(self):
         print("\n-- All Students --")
@@ -61,6 +103,8 @@ tracker = GradeTracker()
 tracker.add_student("Carlos", 95)
 tracker.add_student("Maria", 87)
 tracker.add_student("Ana", 78)
-tracker.undo()
-tracker.log.show_log()    # should show all actions, latest first
+tracker.add_student("Bob", 92)
+tracker.add_student("Eve", 101)   # blocked by decorator
+tracker.show_ranked()             # sorted by grade
 tracker.show_all()
+tracker.log.show_log()
