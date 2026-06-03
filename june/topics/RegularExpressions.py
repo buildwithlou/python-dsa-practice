@@ -69,6 +69,11 @@ re.search("[^0-9]+", "hello123")
 #\D   # NOT a digit
 #\W   # NOT a word character
 #\S   # NOT whitespace
+# \d{3}     # exactly 3 digits
+# \d{3,}    # 3 or more digits
+# \d{3,5}   # between 3 and 5 digits
+# \w{4}     # exactly 4 word characters
+# [a-z]{2,4} # 2 to 4 lowercase letters
 
 re.search("\d+", "abc123")      #matches '123'
 re.search("\w+", "hello world") #matches 'hello'
