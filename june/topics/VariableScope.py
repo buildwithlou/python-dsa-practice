@@ -51,13 +51,13 @@ def outer():
 outer()
 
 ###Built in Scope: variables and functions Python provides automatically and you never define them
-print()
-len()
-range()
-type()
-int()
-str()
-list()
+# print()
+# len()
+# range()
+# type()
+# int()
+# str()
+# list()
 
 ###Full Example
 name = "Global Carlos"
