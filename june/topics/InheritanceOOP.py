@@ -137,12 +137,14 @@ class Car:
     def accelerate(self, amount):
         self.speed += amount
         print(f"Speed: {self.speed}mph")
+        
     def brake(self, amount):
         if amount > self.speed:
             print("Can't go below 0")
             return
         self.speed -= amount
         print(f"Speed: {self.speed}mph")
+
     def __str__(self)    :
         return f"{self.year} {self.make} {self.model}"
     
