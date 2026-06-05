@@ -1,0 +1,29 @@
+PYpI = Python Package Index is just a store, website: pypi.org
+        It is a App Store for python packages, if you need a library, seach for PyPI, install it with pip and use it in your code
+
+pip = is the tool that downloads from PyPI and installs packages on your computer. it comes with Python automatically
+        *pip install requests
+        *pip install requests=2.28.0
+        *pip uninstall requests
+        *pip list
+        *pip show requests
+        *pip install -upgrade requests
+        When you work on a project you save all its dependencies on one file: requirements.txt which is gonna look like this
+            requests==2.28.0
+            flask==2.3.0
+            pandas==1.5.0
+            then anyone who clones your project just runs: pip install -r requirements.txt
+
+venv = creates an isolated box for each project, for example project A and project B needs requests version 2.0 or 3.0
+        Your Computer
+        ├── Project A (venv) → requests 2.0
+        ├── Project B (venv) → requests 3.0
+        └── Global Python    → no conflicts 
+        Creating and Using a venv
+            python -m venv venv
+            source venv/bin/activate
+            venv\Scripts\activate
+            (venv) $
+            (venv) $ pip install requests
+            deactivate
+            
