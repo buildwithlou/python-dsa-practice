@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "task": "Learn Python",
+        "done": false
+    },
+    {
+        "id": 2,
+        "task": "Build Task Tracker",
+        "done": false
+    }
+]
