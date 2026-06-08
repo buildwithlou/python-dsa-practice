@@ -20,9 +20,9 @@ from pathlib import Path
 def json_file(file):
     path = Path(file)
     if not path.exists():
-        path.write_text("[]")
+        path.write_text("[]") #creates empty JSON array if file doesn't exist
         print(f"{file} created!")
-    with open(path, "r") as f:
+    with open(path, "r") as f: #loading data before handing to the with block 
         data = json.load(f)
     try:
         yield data
