@@ -1,5 +1,5 @@
 ###REST API has 4 main operations called CRUD: Create, Read, Update, Delete
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, field_validator
 from typing import Optional, List
 
@@ -34,8 +34,15 @@ def get_tasks():
     return {"tasks": tasks}
 
 #Add a new task
-@app.post("/tasks")
+@app.post("/tasks", status_code = status.HTTP_201_CREATED)
 def create_task(task: Task):
+    #check for duplicate IDs
+    for existing in tasks:
+        if existing["id"] == task.id:
+            raise HTTPException(
+                status_code = 400,
+                detail= f"Task with id  {task.id} already exists"
+            )
     tasks.append(task.model_dump())
     return {"message": "Task created!", "task": task}
 
