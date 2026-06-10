@@ -1,7 +1,7 @@
 ###REST API has 4 main operations called CRUD: Create, Read, Update, Delete
-from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import Optional
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, field_validator
+from typing import Optional, List
 
 app = FastAPI()
 
@@ -12,6 +12,19 @@ class Task(BaseModel):
     status: str = "todo"                #default value
     description: Optional[str] = None   #optional field  
 
+  # Validator — runs automatically when data comes in
+    @field_validator("status")
+    def validate_status(cls, value):
+        allowed = ["todo", "in-progress", "done"]
+        if value not in allowed:
+            raise ValueError(f"Status must be one of {allowed}")
+        return value
+
+    @field_validator("title")
+    def validate_title(cls, value):
+        if len(value) < 3:
+            raise ValueError("Title must be at least 3 characters")
+        return value.strip()    # removes extra spaces automatically
 #In memory storage for now
 tasks = []
 
