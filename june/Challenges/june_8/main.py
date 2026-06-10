@@ -45,7 +45,7 @@ def get_task(task_id: int):
     for task in tasks:
         if task["id"] == task_id:
             return {"task": task}
-    return {"error": "Task not found"}
+    raise HTTPException(status_code = 404, detail = f"Task {task_id} not found")
 
 #Put Update a task
 @app.put("/tasks/{task_id}")
@@ -53,8 +53,8 @@ def update_task(task_id: int, updated_task: Task):
     for i, task in enumerate(tasks):
         if task["id"] == task_id:
             tasks[i] = updated_task.model_dump()
-            return {"message": "Task updated!", "task": updated_task}
-    return {"error": "Task not found"}
+            return {"message": "Task updated!", "task": tasks[i]}
+    raise HTTPException(status_code = 404, detail = f"Task {task_id} not found")
 
 #Delete a task
 @app.delete("/tasks/{task_id}")
@@ -63,4 +63,4 @@ def delete_task(task_id: int):
         if task["id"] == task_id:
             tasks.pop(i)
             return {"message": f"Task {task_id} deleted!"}
-    return {"error": "Task not found"}
+    raise HTTPException(status_code = 404, detail = f"Task {task_id} not found")
