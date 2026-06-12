@@ -1,5 +1,5 @@
 ###REST API has 4 main operations called CRUD: Create, Read, Update, Delete
-from fastapi import FastAPI, HTTPException, status, Depends, BackgroundTasks
+from fastapi import FastAPI, HTTPException, status, Depends, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
 from typing import Optional, List
@@ -38,11 +38,11 @@ def verify_token(token: str):
 
 #Every single requests gets timed automatically
 @app.middleware("http")
-async def timer_middleware(request, call_next):
+async def timer_middleware(request: Request, call_next):
     start = time.time()
     response = await call_next(request) #run the endpoint
     duration = time.time() - start
-    print(f"{request.url} took {duration: .4f}s")
+    print(f"{request.method} {request.url} took {duration: .4f}s")
     return response
 
 def send_notification(task_title: str):
