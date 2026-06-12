@@ -1,8 +1,9 @@
 ###REST API has 4 main operations called CRUD: Create, Read, Update, Delete
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Depends, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
 from typing import Optional, List
-import httpx #this is a sync version of requests
+import time, httpx #this is a sync version of requests
 
 app = FastAPI()
 
@@ -29,27 +30,56 @@ class Task(BaseModel):
 #In memory storage for now
 tasks = []
 
+#Write once
+def verify_token(token: str):
+    if token != "secret123":
+        raise HTTPException(status_code = 401, detail = "Invalid token")
+    return token
+
+#Every single requests gets timed automatically
+@app.middleware("http")
+async def timer_middleware(request, call_next):
+    start = time.time()
+    response = await call_next(request) #run the endpoint
+    duration = time.time() - start
+    print(f"{request.url} took {duration: .4f}s")
+    return response
+
+def send_notification(task_title: str):
+    print(f"Sending email: task '{task_title}' was created!")
+
 #Get all tasks
 @app.get("/tasks")
-async def get_tasks(skip : int = 0, limit: int = 10): #<- Async form
-    return {"tasks": tasks[skip:skip + limit]}
+async def get_tasks(
+    skip: int = 0,
+    limit: int = 10,
+    token: str = Depends(verify_token)): #<- Async form ( allows for non blocking operations, enabling multiple requests)
+    return {"tasks": tasks[skip: skip + limit]}
 
 #Add a new task
 @app.post("/tasks", status_code = status.HTTP_201_CREATED)
-async def create_task(task: Task):
-    #check for duplicate IDs
+async def create_task(
+    task: Task, 
+    background_tasks: BackgroundTasks,
+    token: str = Depends(verify_token)):
+
+    #checking duplicate IDs
     for existing in tasks:
         if existing["id"] == task.id:
             raise HTTPException(
                 status_code = 400,
-                detail= f"Task with id  {task.id} already exists"
+                detail= f"Task with id {task.id} already exists"
             )
     tasks.append(task.model_dump())
+    background_tasks.add_task(send_notification, task.title)
     return {"message": "Task created!", "task": task}
 
 #Get single task by ID
 @app.get("/tasks/{task_id}")
-async def get_task(task_id: int):
+async def get_task(
+    task_id: int,
+    token: str = Depends(verify_token)
+    ):
     for task in tasks:
         if task["id"] == task_id:
             return {"task": task}
@@ -57,7 +87,11 @@ async def get_task(task_id: int):
 
 #Put Update a task
 @app.put("/tasks/{task_id}")
-async def update_task(task_id: int, updated_task: Task):
+async def update_task(
+    task_id: int, 
+    updated_task: Task,
+    token: str = Depends(verify_token)
+    ):
     for i, task in enumerate(tasks):
         if task["id"] == task_id:
             tasks[i] = updated_task.model_dump()
@@ -66,7 +100,10 @@ async def update_task(task_id: int, updated_task: Task):
 
 #Delete a task
 @app.delete("/tasks/{task_id}")
-async def delete_task(task_id: int):
+async def delete_task(
+    task_id: int,
+    token: str = Depends(verify_token)
+    ):
     for i, task in enumerate(tasks):
         if task["id"] == task_id:
             tasks.pop(i)
@@ -81,3 +118,4 @@ async def get_github_user(username: str):
         if response.status_code == 404:
             raise HTTPException(status_code = 404, detail = "Github user not found")
         return response.json()
+    
