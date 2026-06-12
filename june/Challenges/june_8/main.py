@@ -2,6 +2,7 @@
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, field_validator
 from typing import Optional, List
+import httpx #this is a sync version of requests
 
 app = FastAPI()
 
@@ -30,12 +31,12 @@ tasks = []
 
 #Get all tasks
 @app.get("/tasks")
-def get_tasks():
-    return {"tasks": tasks}
+async def get_tasks(skip : int = 0, limit: int = 10): #<- Async form
+    return {"tasks": tasks[skip:skip + limit]}
 
 #Add a new task
 @app.post("/tasks", status_code = status.HTTP_201_CREATED)
-def create_task(task: Task):
+async def create_task(task: Task):
     #check for duplicate IDs
     for existing in tasks:
         if existing["id"] == task.id:
@@ -48,7 +49,7 @@ def create_task(task: Task):
 
 #Get single task by ID
 @app.get("/tasks/{task_id}")
-def get_task(task_id: int):
+async def get_task(task_id: int):
     for task in tasks:
         if task["id"] == task_id:
             return {"task": task}
@@ -56,7 +57,7 @@ def get_task(task_id: int):
 
 #Put Update a task
 @app.put("/tasks/{task_id}")
-def update_task(task_id: int, updated_task: Task):
+async def update_task(task_id: int, updated_task: Task):
     for i, task in enumerate(tasks):
         if task["id"] == task_id:
             tasks[i] = updated_task.model_dump()
@@ -65,9 +66,18 @@ def update_task(task_id: int, updated_task: Task):
 
 #Delete a task
 @app.delete("/tasks/{task_id}")
-def delete_task(task_id: int):
+async def delete_task(task_id: int):
     for i, task in enumerate(tasks):
         if task["id"] == task_id:
             tasks.pop(i)
             return {"message": f"Task {task_id} deleted!"}
     raise HTTPException(status_code = 404, detail = f"Task {task_id} not found")
+
+#get a github username
+@app.get("/github/{username}")
+async def get_github_user(username: str):
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"https://api.github.com/users/{username}")
+        if response.status_code == 404:
+            raise HTTPException(status_code = 404, detail = "Github user not found")
+        return response.json()
