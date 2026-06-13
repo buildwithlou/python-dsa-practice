@@ -8,6 +8,47 @@ import time, httpx #this is a sync version of requests
 app = FastAPI()
 #This would send an email or Slack message
 def send_notification(task_title: str):
+    print(f"Sending notification: task '{task_title}' was created!")
+
+#Data Model - defines what a task looks like
+class Task(BaseModel):
+    id: int
+    title: str
+    status: str = "todo"                #default value
+    description: Optional[str] = None   #optional field  
+
+  # Validator — runs automatically when data comes in
+    @field_validator("status")
+    def validate_status(cls, value):
+        allowed = ["todo", "in-progress", "done"]
+        if value not in allowed:
+            raise ValueError(f"Status must be one of {allowed}")
+        return value
+
+    @field_validator("title")
+    def validate_title(cls, value):
+        if len(value) < 3:
+            raise ValueError("Title must be at least 3 characters")
+        return value.strip()    # removes extra spaces automatically
+#In memory storage for now
+tasks = []
+
+#Write once
+def verify_token(token: str):
+    if token != "secret123":
+        raise HTTPException(status_code = 401, detail = "Invalid token")
+    return token
+
+#Every single requests gets timed automatically
+@app.middleware("http")
+async def timer_middleware(request: Request, call_next):
+    start = time.time()
+    response = await call_next(request) #run the endpoint
+    duration = time.time() - start
+    print(f"{request.method} {request.url} took {duration: .4f}s")
+    return response
+
+def send_notification(task_title: str):
     print(f"Sending email: task '{task_title}' was created!")
 
 #Get all tasks
