@@ -1,0 +1,15 @@
+2026-06-08 10:23:11 ERROR Database connection failed
+2026-06-08 10:23:15 INFO Server started on port 8000
+2026-06-08 10:24:01 WARNING High memory usage detected
+2026-06-08 10:24:55 ERROR Timeout connecting to API
+2026-06-08 10:25:10 INFO Request completed in 0.23s
+2026-06-08 10:25:45 ERROR Database connection failed
+2026-06-08 10:26:01 WARNING Disk usage above 80%
+2026-06-08 10:26:30 INFO New user registered
+2026-06-08 10:27:11 ERROR Failed to send email
+2026-06-08 10:27:45 INFO Request completed in 0.45s
+2026-06-08 10:28:01 WARNING High memory usage detected
+2026-06-08 10:28:30 ERROR Database connection failed
+2026-06-08 10:29:00 INFO Server health check passed
+2026-06-08 10:29:45 ERROR Timeout connecting to API
+2026-06-08 10:30:00 INFO Request completed in 0.12s
