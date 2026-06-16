@@ -55,7 +55,7 @@ def main():
     if "--save" in args:
         index = args.index("--save")
         output = args[index + 1]
-        reporter.save_reporter(output)
+        reporter.save_report(output)
 
 if __name__ == "__main__":
     main()
