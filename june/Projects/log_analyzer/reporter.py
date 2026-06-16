@@ -32,7 +32,7 @@ class Reporter:
         print(f"\n{level.upper()} entries ({len(filtered)} total):")
         print("-"*40)
         for entry in filtered:
-            print(f" {entry.timestamp.strftime("%Y-%m-%d")} -> {entry.message}")
+            print(f" {entry.timestamp.strftime('%H:%M:%S')} -> {entry.message}")
     
     def filter_by_date(self, date_str):
         filtered = [e for e in self.entries
@@ -60,3 +60,4 @@ class Reporter:
         with open(output_path, "w") as f:
             json.dump(report, f, indent=4)
         print(f"\nReport saved to {output_path}")
+
