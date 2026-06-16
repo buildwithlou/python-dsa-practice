@@ -51,6 +51,11 @@ def main():
         index = args.index("--top")
         n = int(args[index +1])
         reporter.most_common_errors(n)
+    
+    if "--save" in args:
+        index = args.index("--save")
+        output = args[index + 1]
+        reporter.save_reporter(output)
 
 if __name__ == "__main__":
     main()
