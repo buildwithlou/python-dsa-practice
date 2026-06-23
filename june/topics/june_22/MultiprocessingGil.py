@@ -12,3 +12,7 @@ if __name__ == "__main__":
     p1 = Process(target=cpu_heavy_task)
     p2 = Process(target=cpu_heavy_task)
     p1.start()
+    p2.start()
+    p1.join()
+    p2.join()
+    print(f"Multiprocessing: {time.time() - start:.2f}s")
