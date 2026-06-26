@@ -1,14 +1,16 @@
-from concurrent.futures import ThreadPoolExecutor
-import requests
 import time
+from concurrent.futures import ThreadPoolExecutor
+
+import requests
 
 servers = [
     "https://api.github.com",
     "https://httpbin.org/get",
     "https://jsonplaceholder.typicode.com/todos/1",
     "https://www.google.com",
-    "https://api.github.com/users/buildwithlou"
+    "https://api.github.com/users/buildwithlou",
 ]
+
 
 def check_health(url):
     try:
@@ -19,14 +21,15 @@ def check_health(url):
         return f"{status} {url} ({duration:.2f}s)"
     except Exception as e:
         return f"DOWN {url} ({str(e)})"
-    
-#Sequential
+
+
+# Sequential
 start = time.time()
 sequential_results = [check_health(url) for url in servers]
 sequential_time = time.time() - start
 print(f"Sequential: {sequential_time:.2f}s")
 
-#Check all servers concurrently
+# Check all servers concurrently
 start = time.time()
 with ThreadPoolExecutor(max_workers=4) as executor:
     results = list(executor.map(check_health, servers))
