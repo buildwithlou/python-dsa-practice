@@ -1,7 +1,10 @@
-from multiprocessing import Pool
 import time
+from multiprocessing import Pool
+
+
 def calculate_sum(n):
-    return sum(i ** 2 for i in range(n))
+    return sum(i**2 for i in range(n))
+
 
 if __name__ == "__main__":
     numbers = [5_000_000, 6_000_000, 7_000_000, 8_000_000]
@@ -13,7 +16,7 @@ if __name__ == "__main__":
     print(results)
 
     start = time.time()
-    with Pool(processes = 4) as pool:
+    with Pool(processes=4) as pool:
         results = pool.map(calculate_sum, numbers)
     parallel_time = time.time() - start
     print(f"Parallel: {parallel_time:.4f}s")

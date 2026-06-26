@@ -16,19 +16,21 @@ import json
 from contextlib import contextmanager
 from pathlib import Path
 
+
 @contextmanager
 def json_file(file):
     path = Path(file)
     if not path.exists():
-        path.write_text("[]") #creates empty JSON array if file doesn't exist
+        path.write_text("[]")  # creates empty JSON array if file doesn't exist
         print(f"{file} created!")
-    with open(path, "r") as f: #loading data before handing to the with block 
+    with open(path, "r") as f:  # loading data before handing to the with block
         data = json.load(f)
     try:
         yield data
     finally:
         with open(path, "w") as f:
-            json.dump(data,f , indent=4)
+            json.dump(data, f, indent=4)
+
 
 with json_file("data.json") as data:
     data.append({"name": "Carlos", "grade": 95})

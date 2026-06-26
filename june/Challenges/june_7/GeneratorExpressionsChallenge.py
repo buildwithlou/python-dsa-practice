@@ -1,6 +1,6 @@
-numbers = range(1,1001)
+numbers = range(1, 1001)
 # Create a generator for all odd numbers in the range
-oddNumbers = (x for x in range(1,1001) if x % 2 != 0)
+oddNumbers = (x for x in range(1, 1001) if x % 2 != 0)
 print("-----------------ALL ODD NUMBERS IN THE RANGE-----------------")
 for x in oddNumbers:
     print(x, end=" ")
