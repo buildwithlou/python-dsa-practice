@@ -1,9 +1,12 @@
 import threading
 import time
+
+
 def io_task():
     print("Waiting for I/O...")
     time.sleep(2)
     print("Done!")
+
 
 start = time.time()
 t1 = threading.Thread(target=io_task)

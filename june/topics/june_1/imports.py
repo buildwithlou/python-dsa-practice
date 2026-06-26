@@ -1,15 +1,16 @@
 import math
+
 print(math.sqrt(16))
 print(math.pi)
 
 import random
-print(random.randint(1,10))
 
+print(random.randint(1, 10))
 
 
 import datetime
-print(datetime.date.today())
 
+print(datetime.date.today())
 
 
 # import os ##Talk to your operating system
@@ -43,15 +44,15 @@ print(datetime.date.today())
 from collections import Counter, defaultdict, deque
 
 words = ["apple", "banana", "apple", "orange", "banana", "apple"]
-count = Counter(words) #count the frequency of each word in the list
+count = Counter(words)  # count the frequency of each word in the list
 print(count)
-print(count.most_common(2)) #get the two most common words
+print(count.most_common(2))  # get the two most common words
 
-scores = defaultdict(int) #create a defaultdict with int as the default factory
-scores["Lourdes"] += 10 #increment the score for "Lourdes" by 10
-print(scores["Lourdes"]) #print the score for "Lourdes"
+scores = defaultdict(int)  # create a defaultdict with int as the default factory
+scores["Lourdes"] += 10  # increment the score for "Lourdes" by 10
+print(scores["Lourdes"])  # print the score for "Lourdes"
 
-queue = deque([1,2,3]) #create a deque (double-ended queue)
-queue.appendleft(0) #add an element to the left end of the deque
-queue.pop() #remove and return an element from the right end of the deque
-print(queue) #print the current state of the deque
+queue = deque([1, 2, 3])  # create a deque (double-ended queue)
+queue.appendleft(0)  # add an element to the left end of the deque
+queue.pop()  # remove and return an element from the right end of the deque
+print(queue)  # print the current state of the deque
