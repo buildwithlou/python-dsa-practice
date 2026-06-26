@@ -1,6 +1,8 @@
-import sys 
+import sys
+
 from parser import LogParser
 from reporter import Reporter
+
 
 def print_usage():
     print("""Usage: python analyzer.py <logfile> [options]
@@ -19,6 +21,7 @@ Examples:
   python analyzer.py sample.log --save report.json
     """)
 
+
 def main():
     if len(sys.argv) < 2:
         print_usage()
@@ -31,7 +34,7 @@ def main():
     if not entries:
         print("No entries found or file is empty")
         return
-    
+
     reporter = Reporter(entries)
 
     reporter.summary()
@@ -49,13 +52,14 @@ def main():
 
     if "--top" in args:
         index = args.index("--top")
-        n = int(args[index +1])
+        n = int(args[index + 1])
         reporter.most_common_errors(n)
-    
+
     if "--save" in args:
         index = args.index("--save")
         output = args[index + 1]
         reporter.save_report(output)
+
 
 if __name__ == "__main__":
     main()

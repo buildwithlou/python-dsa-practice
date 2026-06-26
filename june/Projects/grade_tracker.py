@@ -1,9 +1,9 @@
-#Student Grade Tracker
-#Topics: Decorators, HashMaps, Linked List, Stack, BST
+# Student Grade Tracker
+# Topics: Decorators, HashMaps, Linked List, Stack, BST
 def validate_grade(func):
 
     def wrapper(*args, **kwargs):
-        #args[2] will be the grade
+        # args[2] will be the grade
         if args[2] < 0 or args[2] > 100:
             print("ERROR: grade must be between 0 and 100")
             return None
@@ -13,14 +13,12 @@ def validate_grade(func):
 
 
 class Node:
-
     def __init__(self, value):
         self.value = value
         self.next = None
 
 
 class ActionLog:
-
     def __init__(self):
         self.head = None
 
@@ -38,7 +36,6 @@ class ActionLog:
 
 
 class BSTNode:
-
     def __init__(self, grade, name):
         self.grade = grade
         self.name = name
@@ -47,7 +44,6 @@ class BSTNode:
 
 
 class GradeBST:
-
     def __init__(self):
         self.root = None
 
@@ -78,7 +74,6 @@ class GradeBST:
 
 
 class GradeTracker:
-
     def __init__(self):
         self.students = {}
         self.undo_stack = []
@@ -88,7 +83,7 @@ class GradeTracker:
     @validate_grade
     def add_student(self, name, grade):
         self.students[name] = grade
-        self.undo_stack.append(name)  #push to stack
+        self.undo_stack.append(name)  # push to stack
         self.log.log(f"Added {name} with grade {grade}")
         self.bst.insert(grade, name)
         print(f"Added {name} with grade {grade}")
