@@ -1,9 +1,3 @@
-import os
-import sys
-
-# Look directly inside the current Testing folder for ledger.py
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
-
 import unittest
 
 from ledger import TransactionLedger  # This will now find it perfectly!
