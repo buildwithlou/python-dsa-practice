@@ -1,5 +1,6 @@
 import pytest
-from grade_tracker import GradeTracker
+
+from Projects.Testing.grade_tracker import GradeTracker
 
 
 # A fixture to provide a clean tracker instance for every test
