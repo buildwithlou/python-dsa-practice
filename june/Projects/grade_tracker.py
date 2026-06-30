@@ -1,5 +1,12 @@
 # Student Grade Tracker
 # Topics: Decorators, HashMaps, Linked List, Stack, BST
+import glob
+
+print("---Searching with standalone glob module---")
+# This wll fin all .json files in your log_analyzer project folder
+json_files = glob.glob("Projects/log_analyzer/*.glob")
+
+
 def validate_grade(func):
 
     def wrapper(*args, **kwargs):
