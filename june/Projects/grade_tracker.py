@@ -1,10 +1,17 @@
 # Student Grade Tracker
 # Topics: Decorators, HashMaps, Linked List, Stack, BST
 import glob
+from pathlib import Path
 
 print("---Searching with standalone glob module---")
 # This wll fin all .json files in your log_analyzer project folder
 json_files = glob.glob("Projects/log_analyzer/*.glob")
+print("Found JSON giles:", json_files)
+print("\n---Searching with modern Path.glob---")
+# This will fin every single Python file across all your daily challenge folder
+root_dir = Path(".")
+for py_file in root_dir.glob("Challenges/**/*.py"):
+    print("Found challenge file:", py_file)
 
 
 def validate_grade(func):
