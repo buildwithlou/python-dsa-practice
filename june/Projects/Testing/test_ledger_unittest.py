@@ -9,7 +9,6 @@ class TestTransactionLedger(unittest.TestCase):
         self.ledger = TransactionLedger(starting_balance=100.0)
 
     def test_initial_balance(self):
-        # We can create a one-off instance to test default parameters
         standalone_ledger = TransactionLedger()
         self.assertEqual(standalone_ledger.balance, 0.0)
 
@@ -19,7 +18,7 @@ class TestTransactionLedger(unittest.TestCase):
         self.assertEqual(self.ledger.balance, 150.0)
 
     def test_insufficient_funds_raises_error(self):
-        # Testing exceptions using a context manager in unittest
+        # Testing exceptions using a context manager in the document
         with self.assertRaises(ValueError):
             self.ledger.add_transaction(-200.0, "Vacation")
 
